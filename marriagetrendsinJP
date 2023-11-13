@@ -1,0 +1,44 @@
+library(readxl)
+library(lmtest)
+library(fUnitRoots)
+library(tidyverse)
+library(ggplot2)
+library(forecast)
+library(dplyr)
+
+
+marriagetrendsjapan2019 <- read_excel("marriagetrendsjapan2019.xlsx")
+View(marriagetrendsjapan2019)
+
+
+registeredmar$as.date = as.Date(registeredmar$DATE, format="%m/%d/%y")
+
+#converting the data to time series
+marriagetrendsjapan2019_tsdata <-ts (marriagetrendsjapan2019$NUMBER,start=c(2001,1),frequency=12)
+plot (marriagetrendsjapan2019_tsdata,main="marriagetrendsjapan_2019")
+
+#decomposing
+marriagetrendsjapan2019_timeseriescomponents <- decompose (marriagetrendsjapan2019_tsdata)
+plot(registeredmar_timeseriescomponents)
+
+
+#adf,acf and pacf testing for stationarity
+adfTest(marriagetrendsjapan2019_tsdata) 
+acf(marriagetrendsjapan2019_tsdata,main="acf MARRIAGE TRENDS")
+pacf(marriagetrendsjapan2019_tsdata),main="pacf MARRIAGE TRENDS")
+
+
+#differencing because there's long trend. is there even a long trend?dafuq
+marriagetrends_ln=log (marriagetrendsjapan2019_tsdata)
+marriagetrends_diffln=diff(marriagetrendsjapan2019_tsdata)
+plot(marriagetrends_diffln)
+
+
+#adf,acf and pacf testing again for stationarity
+marriagetrendsjapan2019_diff1=diff (marriagetrends_diffln)
+adfTest(marriagetrendsjapan2019_diff1)
+acf(marriagetrendsjapan2019_diff1)
+pacf(marriagetrendsjapan2019_diff1)
+
+
+#still stationary so I have no idea fudge. also acf and pacf axis are decimals, why?
