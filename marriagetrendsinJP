@@ -1,3 +1,4 @@
+#openlibraries
 library(readxl)
 library(lmtest)
 library(fUnitRoots)
@@ -6,11 +7,11 @@ library(ggplot2)
 library(forecast)
 library(dplyr)
 
-
+#openfile
 marriagetrendsjapan2019 <- read_excel("marriagetrendsjapan2019.xlsx")
 View(marriagetrendsjapan2019)
 
-
+#clean/format data
 registeredmar$as.date = as.Date(registeredmar$DATE, format="%m/%d/%y")
 
 #converting the data to time series
@@ -41,4 +42,4 @@ acf(marriagetrendsjapan2019_diff1)
 pacf(marriagetrendsjapan2019_diff1)
 
 
-#still stationary so I have no idea fudge. also acf and pacf axis are decimals, why?
+#still not stationary so I have no idea fudge. also acf and pacf axis are decimals, why?
